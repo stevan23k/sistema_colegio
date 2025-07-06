@@ -6,6 +6,7 @@ import { Materias } from "../../db/schemas/materias.js";
 export const findCursos = async (req, res) => {
   try {
     const cursos = await Cursos.find({})
+
       .populate("estudiantes", "nombres")
       .populate("director", "nombres")
       .populate("materias", "nombre")
