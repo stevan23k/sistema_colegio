@@ -7,6 +7,7 @@ const matariaSchema = new mongoose.Schema({
   },
   profesor: {
     type: mongoose.Types.ObjectId,
+    ref: "Profesores",
   },
 });
 

@@ -3,9 +3,7 @@
   "packageManager": "yarn@4.9.2",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "node index.js",
-    "envLocal": "dotenvx run -- nodemon index.js"
+    "start": "dotenvx run -- nodemon index.js"
   },
   "dependencies": {
     "@dotenvx/dotenvx": "^1.45.1",

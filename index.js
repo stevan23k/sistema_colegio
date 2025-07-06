@@ -1,12 +1,19 @@
 import "./db/database.js";
-import route from "./rutes/rutes.js";
-
+import cursosRoute from "./rutes/rutas/cursos.routes.js";
+import estudiantesRoute from "./rutes/rutas/estudiantes.routes.js";
+import materiasRoute from "./rutes/rutas/materias.routes.js";
+import profesoresRoute from "./rutes/rutas/profesores.routes.js";
+import notasRoute from "./rutes/rutas/notas.routes.js";
 import express from "express";
 
-console.log(process.env.HOLA);
-
 const app = express();
-app.use(route);
+app.use(express.json());
+
+app.use(cursosRoute);
+app.use(materiasRoute);
+app.use(estudiantesRoute);
+app.use(profesoresRoute);
+app.use(notasRoute);
 
 const port = process.env.PORT || 3000;
 

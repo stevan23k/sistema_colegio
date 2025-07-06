@@ -8,6 +8,12 @@ const notasSchema = new mongoose.Schema({
   },
   estudiante: {
     type: mongoose.Types.ObjectId,
+    ref: "Estudiantes",
+    required: true,
+  },
+  nota: {
+    type: Number,
+    required: true,
   },
 });
 

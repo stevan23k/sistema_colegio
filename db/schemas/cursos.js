@@ -7,7 +7,7 @@ const cursoSchema = new mongoose.Schema({
   },
   estudiantes: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Estudiantes",
     },
   ],
@@ -17,10 +17,13 @@ const cursoSchema = new mongoose.Schema({
   },
   materias: [
     {
-      type: Schema.Types.ObjectId,
+      type: mongoose.Types.ObjectId,
       ref: "Materias",
     },
   ],
+  año: {
+    type: Date,
+  },
 });
 
 export const Cursos = mongoose.model("Cursos", cursoSchema);
