@@ -11,9 +11,12 @@ const notasSchema = new mongoose.Schema({
     ref: "Estudiantes",
     required: true,
   },
-  nota: {
+  notas: [{
     type: Number,
     required: true,
+  }],
+  promedio: {
+    type: Number,
   },
 });
 

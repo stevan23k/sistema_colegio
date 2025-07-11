@@ -9,6 +9,7 @@ import {
   deleteEstudiante,
   addMaterias,
   deleteMaterias,
+  editCursos,
 } from "../controllers/cursos.js";
 
 const route = Router();
@@ -28,5 +29,8 @@ route.post("/cursos/addMateria/:idCurso", addMaterias);
 route.delete("/cursos/deleteDirector/:idCurso", deleteDirector);
 route.delete("/cursos/deleteEstudiante/:idCurso", deleteEstudiante);
 route.delete("/cursos/deleteMateria/:idCurso", deleteMaterias);
+
+// editar
+route.put("/cursos/edit/:idCurso", editCursos);
 
 export default route;

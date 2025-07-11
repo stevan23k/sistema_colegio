@@ -11,8 +11,8 @@ const estudianteSchema = new mongoose.Schema({
     minlength: 3,
     required: true,
   },
-  edad: {
-    type: Number,
+  fecha_nacimiento: {
+    type: Date,
     required: true,
   },
   curso: {

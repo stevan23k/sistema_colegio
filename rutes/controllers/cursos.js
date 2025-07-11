@@ -17,6 +17,28 @@ export const findCursos = async (req, res) => {
   }
 };
 
+export const editCursos = async (req, res) => {
+  const { idCurso } = req.params;
+  const { nombre, año } = req.body;
+  try {
+    const curso = await Cursos.findById(idCurso);
+
+    curso.año = año ?? curso.año;
+    curso.nombre = nombre ?? curso.nombre;
+    await curso.save();
+
+    res.status(200).json({
+      mensaje: "Curso editado con exito",
+      nombre: curso.nombre,
+    });
+  } catch (error) {
+    res.status(500).json({
+      mensaje: "Error al editar el curso",
+      error,
+    });
+  }
+};
+
 export const addMaterias = async (req, res) => {
   const { idCurso } = req.params;
   const { idMateria } = req.body;
@@ -32,7 +54,7 @@ export const addMaterias = async (req, res) => {
     }
 
     curso.materias.push(idMateria);
-    curso.save();
+    await curso.save();
 
     res.status(200).json({
       mensaje: "materia agregada con exito",
@@ -62,7 +84,7 @@ export const deleteMaterias = async (req, res) => {
     }
 
     curso.materias = curso.materias.filter((id) => id.toString() !== idMateria);
-    curso.save();
+    await curso.save();
     res.status(200).json({
       mensaje: "Materia eliminada con exito",
       materia: materia.nombre,
@@ -77,8 +99,8 @@ export const deleteMaterias = async (req, res) => {
 };
 
 export const agregarEstudiantes = async (req, res) => {
-  const idCurso = req.params;
-  const idEstudiante = req.body;
+  const { idCurso } = req.params;
+  const { idEstudiante } = req.body;
   const curso = await Cursos.findById(idCurso);
   const estudiante = await Estudiantes.findById(idEstudiante);
 
@@ -103,8 +125,8 @@ export const agregarEstudiantes = async (req, res) => {
 };
 
 export const deleteEstudiante = async (req, res) => {
-  const idCurso = req.params;
-  const idEstudiante = req.body;
+  const { idCurso } = req.params;
+  const { idEstudiante } = req.body;
 
   const curso = await Cursos.findById(idCurso);
   const estudiante = await Estudiantes.findById(idEstudiante);
@@ -126,7 +148,7 @@ export const deleteEstudiante = async (req, res) => {
       (id) => id.toString() !== idEstudiante,
     );
     estudiante.curso = null;
-    curso.save();
+    await curso.save();
     estudiante.save();
 
     res.status(200).json({
@@ -143,8 +165,8 @@ export const deleteEstudiante = async (req, res) => {
 };
 
 export const agregarDirector = async (req, res) => {
-  const idCurso = req.params;
-  const idDirector = req.body;
+  const { idCurso } = req.params;
+  const { idDirector } = req.body;
 
   const curso = await Cursos.findById(idCurso);
   const director = await Profesores.findById(idDirector);
@@ -157,7 +179,7 @@ export const agregarDirector = async (req, res) => {
     }
 
     curso.director = idDirector;
-    curso.save();
+    await curso.save();
 
     res.status(200).json({
       mensaje: "director asignado con exito",
@@ -173,7 +195,7 @@ export const agregarDirector = async (req, res) => {
 };
 
 export const deleteDirector = async (req, res) => {
-  const idCurso = req.params;
+  const { idCurso } = req.params;
 
   const curso = await Cursos.findById(idCurso);
 
@@ -184,7 +206,7 @@ export const deleteDirector = async (req, res) => {
       });
     }
     curso.director = null;
-    curso.save();
+    await curso.save();
     res.status(200).json({
       mensaje: "director eliminado con exito",
       curso: curso.director,
