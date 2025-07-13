@@ -29,4 +29,4 @@ http://localhost:3000/docs
 - POST /create/materias
 - PUT /materias/edit/{idMateria}
 
-![docs](./docs.png)
+![docs](./imgs/docs.png)
