@@ -1,6 +1,7 @@
-# api-rest
+# API REST
 
 ## Endpoints
+### Ruta para la documentacion
 http://localhost:3000/docs
 
 ### Cursos
