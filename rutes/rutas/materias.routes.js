@@ -7,6 +7,7 @@ import {
   deleteProfesor,
   deleteMaterias
 } from "../controllers/materias.js";
+import cacheMiddleware from "../../middlewares/redis.js";
 
 const route = Router();
 
@@ -98,7 +99,7 @@ const route = Router();
  *          500:
  *              description: Error del servidor
  */
-route.get("/materias", findMaterias);
+route.get("/materias", cacheMiddleware("materias"), findMaterias);
 
 /**
  * @swagger
@@ -125,7 +126,7 @@ route.get("/materias", findMaterias);
  *          500:
  *              description: Error del servidor
  */
-route.get("/materias/:nombre", findMateriaById);
+route.get("/materias/:nombre", cacheMiddleware("materias"), findMateriaById);
 
 /**
  * @swagger

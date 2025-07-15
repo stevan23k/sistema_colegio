@@ -1,7 +1,9 @@
 import {Materias} from "../../db/schemas/materias.js";
+import redis from "../../index.js";
 
 export const findMaterias = async (req, res) => {
     const materias = await Materias.find({}).populate("profesor").exec();
+    
     res.status(200).json({materias});
 };
 
@@ -13,6 +15,7 @@ export const deleteMaterias = async (req, res) => {
             return res.status(404).json({mensaje: "Materia no encontrada"});
         }
         await materia.remove();
+        redis.del(`materias{}`);
         res.status(200).json({mensaje: "Materia eliminada con exito"});
     } catch (error) {
         res.status(500).json({mensaje: "Error al eliminar materia", error});
@@ -38,6 +41,7 @@ export const addProfesor = async (req, res) => {
     materia.profesor = idProfesor;
     await materia.save();
 
+    redis.del(`materias{}`);
     res.status(200).json({mensaje: "Profesor agregado con exito"});
 };
 
@@ -55,6 +59,7 @@ export const deleteProfesor = async (req, res) => {
     materia.profesor = null;
     await materia.save();
 
+    redis.del(`materias{}`);
     res.status(200).json({
         mensaje: "Profesor eliminado con exito",
         "materia": materia
@@ -73,5 +78,6 @@ export const createMaterias = async (req, res) => {
     const materia = new Materias({nombre, profesor});
 
     const newMateria = await materia.save();
+    redis.del(`materias{}`);
     res.status(201).json({mensaje: "materia creada con exito", materia: newMateria});
 };

@@ -6,6 +6,7 @@ import {
     deleteProfesores,
     editProfesores
 } from "../controllers/profesores.js";
+import cacheMiddleware from "../../middlewares/redis.js";
 
 const route = Router();
 
@@ -100,7 +101,7 @@ route.post("/create/profesores", createProfesores);
  *          500:
  *              description: Error del servidor
  */
-route.get("/profesores", findProfesores);
+route.get("/profesores", cacheMiddleware("profesores"), findProfesores);
 
 /**
  * @swagger

@@ -6,6 +6,7 @@ import {
   deleteEstudiantes,
   addCurso,
 } from "../controllers/estudiantes.js";
+import cacheMiddleware from "../../middlewares/redis.js";
 
 const route = Router();
 
@@ -115,7 +116,7 @@ const route = Router();
  *          500:
  *              description: Error del servidor
  */
-route.get("/estudiantes", findEstudiantes);
+route.get("/estudiantes", cacheMiddleware("estudiantes"), findEstudiantes);
 
 /**
  * @swagger

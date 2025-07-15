@@ -1,4 +1,5 @@
 import {Notas} from "../../db/schemas/notas.js";
+import redis from "../../index.js";
 
 export const findNotas = async (req, res) => {
     function PromedioNotas(notas) {
@@ -27,6 +28,7 @@ export const eliminarNota = async (req, res) => {
         }
         nota.notas = nota.notas.filter((nota, index) => index+1 !== nNota);
         await nota.save();
+        redis.del("notas{}")
         res.status(200).json({mensaje: `Nota n eliminada con exito`, 
             nota,
             nNota,
@@ -41,6 +43,7 @@ export const createNotas = async (req, res) => {
     const nota = new Notas({materia: idMateria, estudiante: idEstudiante, notas});
     const newNotas = await nota.save();
 
+    redis.del("notas{}");
     res.status(201).json({mensaje: "Notas creadas con éxito", notas: newNotas});
 };
 
@@ -55,6 +58,7 @@ export const addNota = async (req, res) => {
         }
         nota.notas.push(notas);
         await nota.save();
+        redis.del("notas{}");
         res.status(200).json({mensaje: "Nota agregada con exito"});
     } catch (error) {
         res.status(500).json({mensaje: "Error al agregar nota", error});
