@@ -1,4 +1,5 @@
 import {Router} from "express";
+import  cacheMiddleware  from "../../middlewares/redis.js";
 import {
     createCursos,
     findCursos,
@@ -125,7 +126,7 @@ const route = Router();
  *              description: Error del servidor
  */
 
-route.get("/cursos", findCursos);
+route.get("/cursos", cacheMiddleware("cursos"), findCursos);
 
 /**
  * @swagger

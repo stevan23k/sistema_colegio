@@ -1,4 +1,5 @@
 import {Profesores} from "../../db/schemas/profesores.js";
+import redis from "../../index.js";
 
 export const findProfesores = async (req, res) => {
     const profesores = await Profesores.find({});
@@ -40,6 +41,7 @@ export const deleteProfesores = async (req, res) => {
             return res.status(404).json({mensaje: "Profesor no encontrado"})
         }
         await profesor.remove();
+        redis.del(`profesores{}`);
         res.status(200).json({mensaje: "Profesor eliminado con exito"})
     } catch (error) {
         res.status(500).json({mensaje: "Error al eliminar profesor", error})
@@ -58,6 +60,7 @@ export const editProfesores = async (req, res) =>{
     profesor.nombres = nombres ?? profesor.nombres;
     profesor.apellidos = apellidos ?? profesor.apellidos;
     await profesor.save();
+    redis.del(`profesores{}`);
     res.status(200).json({mensaje: "Profesor editado con exito", profesor})
   } catch(error) {
     res.status(500).json({mensaje: "Error al editar profesor", error})
@@ -68,5 +71,6 @@ export const createProfesores = async (req, res) => {
     const {nombres, apellidos} = req.body;
     const profesor = new Profesores({nombres, apellidos});
     const newProfesor = await profesor.save();
+    redis.del(`profesores{}`);
     res.status(201).json({mensaje: "profesor creado con exito", profesor: newProfesor});
 };

@@ -2,6 +2,7 @@ import { Cursos } from "../../db/schemas/cursos.js";
 import { Estudiantes } from "../../db/schemas/estudiantes.js";
 import { Profesores } from "../../db/schemas/profesores.js";
 import { Materias } from "../../db/schemas/materias.js";
+import redis from "../../index.js"
 
 export const findCursos = async (req, res) => {
   try {
@@ -27,6 +28,7 @@ export const editCursos = async (req, res) => {
     curso.nombre = nombre ?? curso.nombre;
     await curso.save();
 
+    redis.del(`cursos{}`);
     res.status(200).json({
       mensaje: "Curso editado con exito",
       nombre: curso.nombre,
@@ -53,6 +55,7 @@ export const addMaterias = async (req, res) => {
       });
     }
 
+    redis.del(`cursos{}`);
     curso.materias.push(idMateria);
     await curso.save();
 
@@ -83,6 +86,7 @@ export const deleteMaterias = async (req, res) => {
       });
     }
 
+    redis.del(`cursos{}`);
     curso.materias = curso.materias.filter((id) => id.toString() !== idMateria);
     await curso.save();
     res.status(200).json({
@@ -111,6 +115,7 @@ export const agregarEstudiantes = async (req, res) => {
     }
     await curso.save();
     await estudiante.save();
+    redis.del(`cursos{}`);
     res.status(200).json({
       mensaje: "Estudiante agregado con exito",
       estudiante: estudiante,
@@ -151,6 +156,7 @@ export const deleteEstudiante = async (req, res) => {
     await curso.save();
     estudiante.save();
 
+    redis.del(`cursos{}`);
     res.status(200).json({
       mensaje: "Estudiante eliminado con exito",
       estudiante: estudiante.nombres,
@@ -181,6 +187,7 @@ export const agregarDirector = async (req, res) => {
     curso.director = idDirector;
     await curso.save();
 
+    redis.del(`cursos{}`);
     res.status(200).json({
       mensaje: "director asignado con exito",
       director,
@@ -207,6 +214,8 @@ export const deleteDirector = async (req, res) => {
     }
     curso.director = null;
     await curso.save();
+
+    redis.del(`cursos{}`);
     res.status(200).json({
       mensaje: "director eliminado con exito",
       curso: curso.director,
@@ -231,6 +240,7 @@ export const createCursos = async (req, res) => {
       año,
     });
     const newCursos = await cursos.save();
+    redis.del(`cursos{}`);
     res
       .status(201)
       .json({ mensaje: "curso creado con exito", curso: newCursos });

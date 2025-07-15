@@ -1,5 +1,6 @@
 import { Estudiantes } from "../../db/schemas/estudiantes.js";
 import { Cursos } from "../../db/schemas/cursos.js";
+import redis from "../../index.js";
 
 function calcularEdad(fecha_nacimiento) {
   const hoy = new Date();
@@ -48,6 +49,7 @@ export const editEstudiantes = async (req, res) => {
     estudiante.curso = curso ?? estudiante.curso;
 
     await estudiante.save();
+    redis.del(`estudiantes{}`);
     res.status(200).json({
       mensaje: "Estudiante editado con éxito",
       estudiante,
@@ -70,6 +72,7 @@ export const createEstudiantes = async (req, res) => {
       curso,
     });
     const newEstudiante = await estudiante.save();
+    redis.del(`estudiantes{}`);
     res.status(201).json({
       mensaje: "estudiante creado con exito",
       estudiante: newEstudiante,
@@ -86,6 +89,7 @@ export const deleteEstudiantes = async (req, res) => {
 
   try {
     const estudiante = await Estudiantes.findByIdAndDelete(idEstudiante);
+    redis.del(`estudiantes{}`);
     res.status(200).json({
       mensaje: "Estudiante eliminado con éxito",
       estudiante,
@@ -117,6 +121,7 @@ export const addCurso = async (req, res) => {
     await estudiante.save();
     await curso.save();
 
+    redis.del(`estudiantes{}`);
     res.status(200).json({
       mensaje: "Curso añadido al estudiante con éxito",
       curso: curso,

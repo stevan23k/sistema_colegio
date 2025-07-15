@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { findNotas, createNotas, addNota, eliminarNota } from "../controllers/notas.js";
+import cacheMiddleware from "../../middlewares/redis.js";
 
 const route = Router();
 
@@ -118,7 +119,7 @@ const route = Router();
  *                                  type: string
  *                                  example: Error al buscar notas
  */
-route.get("/notas", findNotas);
+route.get("/notas", cacheMiddleware("notas"),  findNotas);
 
 /**
  * @swagger
